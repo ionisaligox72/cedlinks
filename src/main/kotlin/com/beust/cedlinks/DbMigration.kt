@@ -53,7 +53,8 @@ class DbMigration {
     fun execute(databaseName: String) {
         init()
         transaction {
-            statement.execute("CREATE TABLE IF NOT EXISTS links (id serial, url TEXT)")
+            statement.execute("CREATE TABLE IF NOT EXISTS links" +
+                    " (id serial, url TEXT, imageUrl TEXT, title TEXT, comment TEXT, saved TEXT, published TEXT)")
         }
         if (version == 1) {
 //            upgrade(1, 2) {
