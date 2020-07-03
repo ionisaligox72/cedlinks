@@ -50,7 +50,7 @@ class DbMigration {
         }
     }
 
-    fun execute(databaseName: String) {
+    fun execute() {
         init()
         transaction {
             statement.execute("CREATE TABLE IF NOT EXISTS links" +
