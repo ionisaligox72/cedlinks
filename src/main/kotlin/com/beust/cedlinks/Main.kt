@@ -1,11 +1,9 @@
 package com.beust.cedlinks
 
 fun initDb() {
-    val dbUrl = "jdbc:postgresql:cedlinks"
-    val user = "postgres"
-    val password = "cedricbeust"
+    val dbUrl = Config.jdbcUrl
     org.jetbrains.exposed.sql.Database.connect(dbUrl, driver = "org.postgresql.Driver",
-            user = user, password = password)
+            user = Config.jdbcUser, password = Config.jdbcPassword)
     DbMigration().execute("cedlinks")
 }
 

@@ -38,10 +38,7 @@ class Wordpress {
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
-    private val localProperties = LocalProperties()
-    private val basicAuthInterceptor = BasicAuthInterceptor(
-            localProperties.getNoThrows("WP_USER"),
-            localProperties.getNoThrows("WP_PASSWORD"))
+    private val basicAuthInterceptor = BasicAuthInterceptor(Config.wpUser, Config.wpPassword)
     private val gson = GsonBuilder().setLenient().create()
     private val client = OkHttpClient.Builder()
             .addInterceptor(logging)
