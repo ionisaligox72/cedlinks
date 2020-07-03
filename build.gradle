@@ -1,0 +1,90 @@
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
+buildscript {
+    ext.kotlinVersion = '1.3.61'
+    ext.dropWizardVersion = '1.3.9'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id "com.heroku.sdk.heroku-gradle" version "1.0.1"
+}
+
+version '1.0-SNAPSHOT'
+group 'com.beust.cedlinks'
+description 'CedLinks'
+
+apply plugin: 'kotlin'
+apply plugin: 'application'
+apply plugin: 'com.heroku.sdk.heroku-gradle'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
+        "io.dropwizard:dropwizard-auth:$dropWizardVersion",
+        "io.dropwizard:dropwizard-core:$dropWizardVersion",
+        "io.dropwizard:dropwizard-assets:$dropWizardVersion",
+        "io.dropwizard:dropwizard-views:$dropWizardVersion",
+        "io.dropwizard:dropwizard-views-mustache:$dropWizardVersion"
+
+    testCompile "org.testng:testng:6.14.3"
+}
+
+mainClassName = 'com.beust.cedlinks.MainKt'
+//def demoPort = System.getenv("PORT") ?: 80
+//applicationDefaultJvmArgs = ["-Ddw.server.applicationConnectors[0].port=" + demoPort.toString()]
+
+run {
+    args = ['server', 'config.yml']
+}
+
+shadowJar {
+    mergeServiceFiles()
+    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
+    manifest {
+        attributes 'Implementation-Title': rootProject.name
+        attributes 'Implementation-Version': rootProject.version
+        attributes 'Implementation-Vendor-Id': rootProject.group
+        attributes 'Build-Time': ZonedDateTime.now(ZoneId.of("UTC"))
+                .format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
+        attributes 'Built-By': InetAddress.localHost.hostName
+        attributes 'Created-By': 'Gradle ' + gradle.gradleVersion
+        attributes 'Main-Class': mainClassName
+    }
+}
+
+// Heroku
+
+task stage(dependsOn: ['shadowJar', 'clean'])
+
+task copyToLib(type: Copy) {
+    into "$buildDir/lib"
+    from(configurations.compile)
+}
+
+stage.dependsOn(copyToLib)
+
+heroku {
+    appName = 'perry-kotlin'
+}
