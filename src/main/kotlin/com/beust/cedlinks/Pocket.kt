@@ -1,6 +1,8 @@
 package com.beust.cedlinks
 
 import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -64,9 +66,16 @@ fun main() {
 
 class Pocket(private val redirectUrl: String) {
     private val TAG = "twit"
+    private val logging = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
     private val gson = GsonBuilder().setLenient().create()
+    private val client = OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build()
     private val retrofit = Retrofit.Builder()
             .baseUrl("https://getpocket.com/v3/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(PocketService::class.java)

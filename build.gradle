@@ -45,7 +45,19 @@ dependencies {
         "com.google.inject:guice:4.2.0",
         "io.dropwizard:dropwizard-core:$dropWizardVersion",
         "com.squareup.retrofit2:retrofit:2.9.0",
-        "com.squareup.retrofit2:converter-gson:2.9.0"
+        "com.squareup.retrofit2:converter-gson:2.9.0",
+        "com.squareup.okhttp3:logging-interceptor:3.9.0"
+
+    implementation platform("ru.vyarus:dropwizard-guicey:5.1.0")
+
+    // no need to specify versions
+    implementation 'ru.vyarus:dropwizard-guicey'
+
+    implementation 'io.dropwizard:dropwizard-auth'
+//    implementation 'com.google.inject:guice-assistedinject'
+
+//    testImplementation 'io.dropwizard:dropwizard-test'
+//    testImplementation 'org.spockframework:spock-core'
 
     testCompile "org.testng:testng:6.14.3"
 }
