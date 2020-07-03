@@ -17,7 +17,7 @@ class CedLinksService {
     fun hello():  String {
         return """
             {
-            "value": "hello"
+            "value": "hello2"
             }
         """.trimIndent()
     }
