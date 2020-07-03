@@ -74,5 +74,9 @@ class CedLinksService {
         Dao().publish()
         return Response.ok().build()
     }
+
+    @GET
+    @Path("ping")
+    fun ping() = "pong"
 }
 
