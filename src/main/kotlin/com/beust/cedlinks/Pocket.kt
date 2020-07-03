@@ -3,6 +3,7 @@ package com.beust.cedlinks
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.slf4j.LoggerFactory
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -60,11 +61,13 @@ interface PocketService {
     fun modify(@Body request: SendRequest): Call<SendResponse>
 }
 
-fun main() {
-    Pocket("https://beust.com").addAndArchive("https://beust.com", "My web site")
-}
+//fun main() {
+//    Pocket("https://beust.com").addAndArchive("https://beust.com", "My web site", "testTags")
+//}
 
 class Pocket(private val redirectUrl: String) {
+    private val log = LoggerFactory.getLogger(Pocket::class.java)
+
     private val TAG = "twit"
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -81,17 +84,17 @@ class Pocket(private val redirectUrl: String) {
             .create(PocketService::class.java)
     private val authRetrofit = Retrofit.Builder()
             .baseUrl("https://getpocket.com/v3/oauth/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(PocketAuthService::class.java)
+    private lateinit var code: String
     private lateinit var accessToken: String
 
-    init {
-        authPocket(redirectUrl)
-    }
+    fun getRedirectUrl() = authPocket(redirectUrl)
 
-    fun addAndArchive(url: String, title: String) {
-        val a = retrofit.add(AddRequest(consumerKey, accessToken, url, title, tags = TAG)).execute()
+    fun addAndArchive(url: String, title: String, tags: String) {
+        val a = retrofit.add(AddRequest(consumerKey, accessToken, url, title, tags)).execute()
         val response = a.body()
         if (response?.status == 1) {
             val itemId = response.item.item_id;
@@ -99,7 +102,7 @@ class Pocket(private val redirectUrl: String) {
                     .execute()
             println(m)
         } else {
-            throw IllegalArgumentException("Couldn't add URL: " + response?.status)
+            throw IllegalArgumentException("Couldn't add URL: " + a.errorBody()?.string())
         }
     }
 
@@ -109,32 +112,26 @@ class Pocket(private val redirectUrl: String) {
         println(response)
     }
 
-    private fun authPocket(redirectUrl: String) {
+    private fun authPocket(redirectUrl: String): String {
         val result = authRetrofit.request(RequestRequest(consumerKey, redirectUrl)).execute()
         println(result.errorBody()?.string())
         val body = result.body()
         if (body != null) {
-            accessToken = body.code
-
-            println("Code: " + body.code)
-            println("Now need to go to " +
-                    "https://getpocket.com/auth/authorize?request_token=${accessToken}&redirect_uri=${redirectUrl}")
+            this.code = body.code
+            return "https://getpocket.com/auth/authorize?request_token=${body.code}&redirect_uri=${redirectUrl}"
         } else {
             throw IllegalArgumentException("Couldn't authorize 1: " + result.errorBody()?.string())
         }
     }
 
     fun authorize() {
-        if (accessToken != null) {
-            val auth = authRetrofit.authorize(AuthorizeRequest(consumerKey, accessToken!!)).execute()
-            val b = auth.body()
-            if (b != null) {
-                accessToken = b.access_token
-            } else {
-                throw IllegalArgumentException("Couldn't authorize 2: " + auth.errorBody()?.string())
-            }
+        val auth = authRetrofit.authorize(AuthorizeRequest(consumerKey, this.code)).execute()
+        val b = auth.body()
+        if (b != null) {
+            this.accessToken = b.access_token
+            log.info("Access token: $accessToken")
         } else {
-            throw IllegalAccessError("Code was not set before calling authorize")
+            throw IllegalArgumentException("Couldn't authorize 2: " + auth.errorBody()?.string())
         }
     }
 }
