@@ -1,1 +1,0 @@
-make: ./gradlew shadowJar
