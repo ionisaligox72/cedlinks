@@ -31,7 +31,7 @@ class Wordpress {
         }
 
         init {
-            credentials = Credentials.basic(user, password)
+            credentials = Credentials.basic(user!!, password!!)
         }
     }
 
