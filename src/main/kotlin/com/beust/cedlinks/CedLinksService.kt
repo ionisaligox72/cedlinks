@@ -18,9 +18,11 @@ class CedLinksService {
     fun list() = Dao().listLinks()
 
     @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("insertLink")
-    fun insertLink(@QueryParam("url") url: String, @QueryParam("title") title: String,
-            @QueryParam("comment") comment: String, @QueryParam("imageUrl") imageUrl: String? = null): Response {
+    fun insertLink(@FormParam("url") url: String, @FormParam("title") title: String,
+            @FormParam("comment") comment: String, @FormParam("imageUrl") imageUrl: String? = null): Response {
         try {
             Dao().insertLink(url, title, comment, imageUrl)
             return Response.ok().build()
