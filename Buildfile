@@ -1,1 +1,1 @@
-make: ./gradlew shadowJar copyToLib
+make: ./gradlew shadowJar

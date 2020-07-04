@@ -89,19 +89,14 @@ shadowJar {
 
 // Heroku
 
-task stage(dependsOn: ['build', 'clean', 'shadowJar'])
+task stage(dependsOn: ['shadowJar', 'clean'])
 
 task copyToLib(type: Copy) {
-    println("COPYING FROM $buildDir/libs")
-    from("$buildDir/libs")
-//    destinationDir = new File(".")
-    into('.')
-//            {
-//        rename "cedlinks-1.0-all.jar", "app.jar"
-//    }
+    into "$buildDir/lib"
+    from(configurations.compile)
 }
 
-copyToLib.dependsOn(shadowJar)
+stage.dependsOn(copyToLib)
 
 heroku {
     appName = 'ced-links'
