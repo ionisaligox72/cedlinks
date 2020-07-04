@@ -92,15 +92,11 @@ shadowJar {
 task stage(dependsOn: ['shadowJar', 'clean'])
 
 task copyToLib(type: Copy) {
-    println("confcomp: " + configurations.compile)
-    project.fileTree("build").visit { FileVisitDetails details ->
-        println("- " + details.file.path)
-    }
-    into "$buildDir/libs-ced"
+    into "$buildDir/lib"
     from(configurations.compile)
 }
 
-copyToLib.dependsOn(shadowJar)
+stage.dependsOn(copyToLib)
 
 heroku {
     appName = 'ced-links'
