@@ -96,7 +96,7 @@ task copyToLib(type: Copy) {
     from(configurations.compile)
 }
 
-shadowJar.dependsOn(copyToLib)
+//copyToLib.dependsOn(shadowJar)
 
 heroku {
     appName = 'ced-links'
