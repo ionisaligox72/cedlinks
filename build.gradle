@@ -89,7 +89,14 @@ shadowJar {
 
 // Heroku
 
-task stage(dependsOn: ['shadowJar', 'clean'])
+task stage(type: Copy, dependsOn: [clean, build]) {
+    from "build/libs/cedlinks-1.0-all.jar"
+    into project.rootDir
+    rename {
+        'app.jar'
+    }
+}
+stage.mustRunAfter(clean)
 
 heroku {
     appName = 'ced-links'
