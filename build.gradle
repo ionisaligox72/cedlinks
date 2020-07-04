@@ -89,14 +89,12 @@ shadowJar {
 
 // Heroku
 
-task stage(dependsOn: ['shadowJar', 'clean'])
-
 task copyToLib(type: Copy) {
     into "$buildDir/lib"
     from(configurations.compile)
 }
 
-stage.dependsOn(copyToLib)
+task stage(dependsOn: ['shadowJar', 'clean', 'copyToLib'])
 
 heroku {
     appName = 'ced-links'
