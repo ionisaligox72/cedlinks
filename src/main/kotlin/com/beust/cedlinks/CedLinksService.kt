@@ -11,8 +11,6 @@ class CedLinksService {
     private lateinit var url: String
     private lateinit var title: String
     private lateinit var tags: String
-    private lateinit var pocket: Pocket
-
 
     @GET
     @Path("list")
