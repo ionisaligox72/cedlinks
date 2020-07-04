@@ -89,15 +89,11 @@ shadowJar {
 
 // Heroku
 
-task stage(dependsOn: ['shadowJar', 'clean'])
+task stage(dependsOn: ['build', 'shadowJar', 'clean'])
 
 task copyToLib(type: Copy) {
-    into "$buildDir/lib"
+    into "$buildDir/libs"
     from(configurations.compile)
-}
-
-task ls(type: Exec, dependsOn: ['shadowJar']) {
-    commandLine "ls -ltr"
 }
 
 stage.dependsOn(copyToLib)
