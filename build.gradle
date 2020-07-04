@@ -96,6 +96,17 @@ task stage(type: Copy, dependsOn: [clean, build]) {
         'app.jar'
     }
 }
+
+tasks.register("ls") {
+    dependsOn("stage")
+    doLast {
+        exec {
+            commandLine("ls -ltr")
+        }
+    }
+}
+
+
 stage.mustRunAfter(clean)
 
 heroku {
