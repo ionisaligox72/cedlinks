@@ -90,6 +90,7 @@ shadowJar {
 // Heroku
 
 task stage(type: Copy, dependsOn: [clean, build]) {
+    println("BUILD DIR IS " + buildDir)
     from "build/libs/cedlinks-1.0-all.jar"
     into project.rootDir
     rename {
