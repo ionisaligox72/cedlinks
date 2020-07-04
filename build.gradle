@@ -92,7 +92,7 @@ shadowJar {
 task stage(dependsOn: ['shadowJar', 'clean'])
 
 task copyToLib(type: Copy) {
-    into "$buildDir/lib"
+    into "$buildDir/libs"
     from(configurations.compile)
 }
 
