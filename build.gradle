@@ -96,6 +96,10 @@ task copyToLib(type: Copy) {
     from(configurations.compile)
 }
 
+task ls(type: Exec, dependsOn: ['shadowJar']) {
+    commandLine "ls -ltr"
+}
+
 stage.dependsOn(copyToLib)
 
 heroku {
