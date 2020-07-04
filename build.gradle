@@ -24,7 +24,7 @@ plugins {
 }
 
 version '1.0-SNAPSHOT'
-group 'com.beust.cedlinks'
+group 'com.beust.cedli  nks'
 description 'CedLinks'
 
 apply plugin: 'kotlin'
@@ -99,5 +99,5 @@ task copyToLib(type: Copy) {
 stage.dependsOn(copyToLib)
 
 heroku {
-    appName = 'perry-kotlin'
+    appName = 'ced-links'
 }
