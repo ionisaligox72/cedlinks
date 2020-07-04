@@ -15,6 +15,10 @@ object Links: Table("links") {
     val published = text("published").nullable()
 }
 
+data class LinkFromDb(val id: Int, override val url: String, override val title: String, override val comment: String,
+        override val imageUrl: String?)
+    : Link(url, title, comment, imageUrl)
+
 class Dao {
     private val log = LoggerFactory.getLogger(Dao::class.java)
 
@@ -30,18 +34,22 @@ class Dao {
         }
     }
 
-    fun publish() {
-        val links = arrayListOf<Link>()
-        val ids = arrayListOf<Int>()
+    fun listLinks(): List<LinkFromDb> {
+        val result = arrayListOf<LinkFromDb>()
         transaction {
             Links.select {
                 Links.published.isNull()
             }.forEach {
-                links.add(Link(it[Links.url], it[Links.title], it[Links.comment], it[Links.imageUrl]))
-                ids.add(it[Links.id])
-                println("not published: $it")
+                result.add(LinkFromDb(it[Links.id],
+                        it[Links.url], it[Links.title], it[Links.comment], it[Links.imageUrl]))
             }
         }
+        return result
+    }
+
+    fun publish() {
+        val links = listLinks()
+        val ids = links.map { it.id }
 
         try {
             Wordpress().postNewArticle(links)
