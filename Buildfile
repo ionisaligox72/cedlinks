@@ -1,1 +1,1 @@
-make: ./gradlew shadowJar
+make: ./gradlew stage

@@ -89,6 +89,8 @@ shadowJar {
 
 // Heroku
 
+task stage(dependsOn: ['shadowJar', 'clean'])
+
 task copyToLib(type: Copy) {
     into "$buildDir/lib"
     from(configurations.compile)
@@ -98,17 +100,4 @@ stage.dependsOn(copyToLib)
 
 heroku {
     appName = 'ced-links'
-}
-
-task stage(type: Copy, dependsOn: [clean, build]) {
-    from jar.archivePath
-    into project.rootDir
-    rename {
-        'app.jar'
-    }
-}
-stage.mustRunAfter(clean)
-
-clean << {
-    project.file('app.jar').delete()
 }
