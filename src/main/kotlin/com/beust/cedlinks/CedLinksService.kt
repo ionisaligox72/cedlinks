@@ -32,7 +32,7 @@ class CedLinksService {
         }
     }
 
-    @POST
+    @GET
     @Path("publish")
     fun publish(@QueryParam("markPublished") markPublished: Boolean = true): Response {
         Dao().publish(markPublished)
