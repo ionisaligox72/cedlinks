@@ -46,7 +46,7 @@ class CedLinksService {
             @QueryParam("url") url: String = "",
             @QueryParam("title") title: String? = null,
             @QueryParam("comment") comment: String? = null): String {
-        val r = String(this::class.java.classLoader.getResourceAsStream("submitLink.html").readAllBytes())
+        val r = String(this::class.java.classLoader.getResourceAsStream("submitLink.html").readBytes())
         val result = r.replace("{{comment}}", comment ?: "")
                 .replace("{{url}}", url)
                 .replace("{{title}}", title ?: "")
