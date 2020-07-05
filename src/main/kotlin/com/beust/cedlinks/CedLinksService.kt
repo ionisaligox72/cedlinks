@@ -50,6 +50,7 @@ class CedLinksService {
         val result = r.replace("{{comment}}", comment ?: "")
                 .replace("{{url}}", url)
                 .replace("{{title}}", title ?: "")
+                .replace("{{host}}", Config.host)
         return result
     }
 

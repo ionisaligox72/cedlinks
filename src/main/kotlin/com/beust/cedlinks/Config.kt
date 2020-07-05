@@ -12,4 +12,5 @@ object Config {
     val jdbcPassword = envOrLocal("JDBC_PASSWORD")
     val wpUser = envOrLocal("WP_USER")
     val wpPassword = envOrLocal("WP_PASSWORD")
+    val host = envOrLocal("HOST")
 }
