@@ -16,7 +16,7 @@ object Links: Table("links") {
 }
 
 data class LinkFromDb(val id: Int, override val url: String, override val title: String, override val comment: String,
-        override val imageUrl: String?)
+        override val imageUrl: String?, val saved: String? = null, val published: String? = null)
     : Link(url, title, comment, imageUrl)
 
 class Dao {
@@ -34,13 +34,14 @@ class Dao {
         }
     }
 
-    fun listLinks(all: Boolean): List<LinkFromDb> {
+    fun listLinks(all: Boolean = false): List<LinkFromDb> {
         val result = arrayListOf<LinkFromDb>()
         transaction {
             if (all) {
                 Links.selectAll().forEach {
                     result.add(LinkFromDb(it[Links.id],
-                            it[Links.url], it[Links.title], it[Links.comment], it[Links.imageUrl]))
+                            it[Links.url], it[Links.title], it[Links.comment], it[Links.imageUrl],
+                            saved = it[Links.saved], published = it[Links.published]))
                 }
             } else {
                 Links.select {
@@ -55,7 +56,7 @@ class Dao {
     }
 
     fun publish(markPublished: Boolean) {
-        val links = listLinks(all = false)
+        val links = listLinks()
         val ids = links.map { it.id }
 
         try {
