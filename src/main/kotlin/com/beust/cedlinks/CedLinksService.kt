@@ -15,7 +15,7 @@ class CedLinksService {
     @GET
     @Path("list")
     @Produces(MediaType.APPLICATION_JSON)
-    fun list() = Dao().listLinks()
+    fun list(@QueryParam("all") all: Boolean = false) = Dao().listLinks(all)
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -34,8 +34,8 @@ class CedLinksService {
 
     @POST
     @Path("publish")
-    fun publish(): Response {
-        Dao().publish()
+    fun publish(@QueryParam("markPublished") markPublished: Boolean = true): Response {
+        Dao().publish(markPublished)
         return Response.ok().build()
     }
 

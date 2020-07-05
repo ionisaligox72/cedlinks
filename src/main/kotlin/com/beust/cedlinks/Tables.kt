@@ -34,30 +34,39 @@ class Dao {
         }
     }
 
-    fun listLinks(): List<LinkFromDb> {
+    fun listLinks(all: Boolean): List<LinkFromDb> {
         val result = arrayListOf<LinkFromDb>()
         transaction {
-            Links.select {
-                Links.published.isNull()
-            }.forEach {
-                result.add(LinkFromDb(it[Links.id],
-                        it[Links.url], it[Links.title], it[Links.comment], it[Links.imageUrl]))
+            if (all) {
+                Links.selectAll().forEach {
+                    result.add(LinkFromDb(it[Links.id],
+                            it[Links.url], it[Links.title], it[Links.comment], it[Links.imageUrl]))
+                }
+            } else {
+                Links.select {
+                    Links.published.isNull()
+                }.forEach {
+                    result.add(LinkFromDb(it[Links.id],
+                            it[Links.url], it[Links.title], it[Links.comment], it[Links.imageUrl]))
+                }
             }
         }
         return result
     }
 
-    fun publish() {
-        val links = listLinks()
+    fun publish(markPublished: Boolean) {
+        val links = listLinks(all = false)
         val ids = links.map { it.id }
 
         try {
             Wordpress().postNewArticle(links)
-            transaction {
-                val date = Dates.formatDate(LocalDateTime.now())
-                Links.update({ Links.id.inList(ids) }) {
-                    log.info("Updating ids to $date")
-                    it[Links.published] = date
+            if (markPublished) {
+                transaction {
+                    val date = Dates.formatDate(LocalDateTime.now())
+                    Links.update({ Links.id.inList(ids) }) {
+                        log.info("Updating ids to $date")
+                        it[Links.published] = date
+                    }
                 }
             }
         } catch(ex: Exception) {
