@@ -39,19 +39,19 @@ class CedLinksService {
         return Response.ok().build()
     }
 
-    @GET
-    @Path("submit")
-    @Produces(MediaType.TEXT_HTML + "; " + MediaType.CHARSET_PARAMETER + "=UTF-8")
-    fun submitLink(
-            @QueryParam("url") url: String = "",
-            @QueryParam("title") title: String? = null,
-            @QueryParam("comment") comment: String? = null): String {
-        val r = String(this::class.java.classLoader.getResourceAsStream("submitLink.html").readAllBytes())
-        val result = r.replace("{{comment}}", comment ?: "")
-                .replace("{{url}}", url)
-                .replace("{{title}}", title ?: "")
-        return result
-    }
+//    @GET
+//    @Path("submit")
+//    @Produces(MediaType.TEXT_HTML + "; " + MediaType.CHARSET_PARAMETER + "=UTF-8")
+//    fun submitLink(
+//            @QueryParam("url") url: String = "",
+//            @QueryParam("title") title: String? = null,
+//            @QueryParam("comment") comment: String? = null): String {
+//        val r = String(this::class.java.classLoader.getResourceAsStream("submitLink.html").readAllBytes())
+//        val result = r.replace("{{comment}}", comment ?: "")
+//                .replace("{{url}}", url)
+//                .replace("{{title}}", title ?: "")
+//        return result
+//    }
 
     @GET
     @Path("ping")
