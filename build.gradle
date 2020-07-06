@@ -98,15 +98,13 @@ jar {
     archiveVersion = "1.0"
 }
 
-task copyToLib(dependsOn: ['stage'], type: Copy) {
+task copyToLib(dependsOn: ['stage']) {
     String jar = "cedlinks-1.0-all.jar"
-    doFirst {
-        new File(jar).delete()
+    doLast {
+        def files = new File("build/libs").listFiles()
+        println("Found files: "+ files)
+        java.nio.file.Files.copy(java.nio.file.Paths.get(files[0].path), java.nio.file.Paths.get("."))
     }
-    def files = new File("build/libs").listFiles()
-    println("Copying "+ files[0])
-    from files ? files[0] : "/tmp"
-    into "."
 }
 
 heroku {
