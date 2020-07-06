@@ -1,11 +1,17 @@
 package com.beust.cedlinks
 
+import com.github.mustachejava.DefaultMustacheFactory
+import java.io.StringWriter
+
 object Template {
-    fun render(file: String, map: Map<String, Any?>): String {
-        var result = String(this::class.java.classLoader.getResourceAsStream(file).readBytes())
-        map.keys.forEach {
-            result = result.replace("{{$it}}", map[it].toString() ?: "")
+    private val mf = DefaultMustacheFactory()
+
+    fun render(file: String, map: Any?): String {
+        mf.compile(file).let { mustache ->
+            StringWriter().let { writer ->
+                mustache.execute(writer, map).flush()
+                return writer.toString()
+            }
         }
-        return result
     }
 }

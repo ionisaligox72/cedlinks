@@ -68,20 +68,14 @@ class Wordpress {
 
     fun post(title: String, content: String, excerpt: String) {
         val r = retrofit.post(PostRequest(title, content, excerpt)).execute()
-        println("ID: " + r.body()?.id)
+        log.info("ID: " + r.body()?.id)
     }
 
     fun postNewArticle(links: List<Link>) {
         if (links.isNotEmpty()) {
             val date = Dates.formatShortDate(LocalDateTime.now())
             val title = "Links for $date"
-
-            val mf = DefaultMustacheFactory()
-            val mustache = mf.compile("post.mustache")
-            val writer = StringWriter()
-            mustache.execute(writer, mapOf("links" to links)).flush()
-            val postContent = writer.toString()
-
+            val postContent = Template.render("post.mustache", mapOf("links" to links))
             post(title, postContent, title)
         } else {
             log.info("No new links to post")
