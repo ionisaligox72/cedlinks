@@ -104,7 +104,8 @@ task copyToLib(dependsOn: ['stage'], type: Copy) {
         new File(jar).delete()
     }
     def files = new File("build/libs").listFiles()
-    from files ? files[0] : "."
+    println("Copying "+ files[0])
+    from files ? files[0] : "/tmp"
     into "."
 }
 
