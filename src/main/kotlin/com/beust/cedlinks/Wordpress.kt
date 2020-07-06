@@ -75,7 +75,7 @@ class Wordpress {
         if (links.isNotEmpty()) {
             val date = Dates.formatShortDate(LocalDateTime.now())
             val title = "Links for $date"
-            val postContent = Template.render("post.mustache", mapOf("links" to links))
+            val postContent = Dao().linksToHtml(links)
             post(title, postContent, title)
         } else {
             log.info("No new links to post")

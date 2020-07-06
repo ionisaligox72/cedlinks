@@ -40,8 +40,16 @@ class CedLinksService {
     }
 
     @GET
+    @Path("preview")
+    @Produces(MediaType.TEXT_HTML)
+    fun publish(): String {
+        val result = Dao().preview()
+        return result
+    }
+
+    @GET
     @Path("submit")
-    @Produces(MediaType.TEXT_HTML + "; " + MediaType.CHARSET_PARAMETER + "=UTF-8")
+    @Produces(MediaType.TEXT_HTML)
     fun submitLink(
             @QueryParam("url") url: String = "",
             @QueryParam("title") title: String? = null,
