@@ -99,8 +99,6 @@ jar {
 }
 
 task copyToLib(dependsOn: ['stage'], type: Copy) {
-    from "build/libs"
-    into "build/libs"
     new File("build/libs").listFiles().each { f ->
         f.renameTo("cedlinks-1.0-all.jar")
     }
