@@ -7,6 +7,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
+import javax.ws.rs.core.Response
 
 class Dao {
     private val log = LoggerFactory.getLogger(Dao::class.java)
@@ -53,11 +54,11 @@ class Dao {
         return Template.render("post.mustache", mapOf("links" to links))
     }
 
-    fun publish(markPublished: Boolean) {
+    fun publish(markPublished: Boolean): Response {
         val links = listLinks()
         val ids = links.map { it.id }
 
-        try {
+        val result = try {
             Wordpress().postNewArticle(links)
             if (markPublished) {
                 transaction {
@@ -68,8 +69,12 @@ class Dao {
                     }
                 }
             }
+            Response.ok()
         } catch(ex: Exception) {
             log.error("Error posting", ex)
+            Response.serverError().entity(ex.message)
         }
+
+        return result.build()
     }
 }
