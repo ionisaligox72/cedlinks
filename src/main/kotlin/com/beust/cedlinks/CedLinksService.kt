@@ -46,11 +46,11 @@ class CedLinksService {
             @QueryParam("url") url: String = "",
             @QueryParam("title") title: String? = null,
             @QueryParam("comment") comment: String? = null): String {
-        val r = String(this::class.java.classLoader.getResourceAsStream("submitLink.html").readBytes())
-        val result = r.replace("{{comment}}", comment ?: "")
-                .replace("{{url}}", url)
-                .replace("{{title}}", title ?: "")
-                .replace("{{host}}", Config.host)
+        val result = Template.render("submitLink.html", mapOf(
+                "comment" to comment,
+                "title" to title,
+                "host" to Config.host
+        ))
         return result
     }
 
