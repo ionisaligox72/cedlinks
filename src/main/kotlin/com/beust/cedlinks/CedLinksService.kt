@@ -1,6 +1,7 @@
 package com.beust.cedlinks
 
 import org.slf4j.LoggerFactory
+import java.net.URI
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
@@ -24,13 +25,14 @@ class CedLinksService {
     @Path("insertLink")
     fun insertLink(@FormParam("url") url: String, @FormParam("title") title: String,
             @FormParam("comment") comment: String, @FormParam("imageUrl") imageUrl: String? = null): Response {
-        try {
+        val result = try {
             dao.insertLink(url, title, comment, imageUrl)
-            return Response.ok().build()
+            Response.seeOther(URI(url))
         } catch(ex: Exception) {
             log.error("Error: " + ex.message, ex)
-            return Response.serverError().build()
+            Response.serverError()
         }
+        return result.build()
     }
 
     @GET
