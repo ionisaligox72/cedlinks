@@ -17,11 +17,19 @@
         font-size: 1.3em;
         font-weight: bold;
     }
+    li {
+        margin: 5px;
+    }
+    .corners {
+        border-radius: 25px;
+        background: #1B9AFF;
+        padding: 10px;
+    }
 </style>
 
 <ul>
     {{#links}}
-    <li>
+    <li class="corners">
         <div class="title">
             <a href="{{url}}">{{title}}</a>
         </div>
