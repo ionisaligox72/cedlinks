@@ -18,18 +18,21 @@
             textarea {
                 width: 80%;
             }
+            div {
+                margin-bottom: 10px;
+                margin-top: 0px;
+            }
         </style>
     </head>
     <body>
         <form method="post" action="{{host}}/insertLink" onsubmit="sendData()">
             <label for="url">URL</label>
             <div>
-                <input size="80" id="url" name="url" value="{{url}}"/>
+                <input id="url" name="url" value="{{url}}"/>
             </div>
-
             <label for="title">TITLE</label>
             <div>
-                <input size="80" id="title" name="title" value="{{title}}"/>
+                <input id="title" name="title" value="{{title}}"/>
             </div>
             <label for="comment">COMMENT</label>
             <div>

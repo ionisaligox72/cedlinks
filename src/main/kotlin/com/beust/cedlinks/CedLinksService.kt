@@ -51,7 +51,7 @@ class CedLinksService {
             @QueryParam("url") url: String = "",
             @QueryParam("title") title: String? = null,
             @QueryParam("comment") comment: String? = null): String {
-        val result = Template.render("submitLink.html", mapOf(
+        val result = Template.render("submitLink.mustache", mapOf(
                 "url" to url,
                 "comment" to comment,
                 "title" to title,
