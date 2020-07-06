@@ -19,5 +19,18 @@
     }
 </style>
 
+<ul>
+    {{#links}}
+    <li>
+        <div class="title">
+            <a href="{{url}}">{{title}}</a>
+        </div>
+        <div class="comment">
+            {{comment}}
+        </div>
+    </li>
+    {{/links}}
+</ul>
+
 {{content}}
 

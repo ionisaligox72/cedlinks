@@ -12,6 +12,13 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 import java.io.IOException
 import java.time.LocalDateTime
+import java.io.PrintWriter
+
+import com.github.mustachejava.DefaultMustacheFactory
+
+import com.github.mustachejava.MustacheFactory
+import java.io.StringWriter
+
 
 open class Link(open val url: String, open val title: String, open val comment: String, open val imageUrl: String?)
 
@@ -68,23 +75,13 @@ class Wordpress {
         if (links.isNotEmpty()) {
             val date = Dates.formatShortDate(LocalDateTime.now())
             val title = "Links for $date"
-            val content = StringBuffer("<ul>\n")
-            links.forEach {
-                content.append("  <li>")
-                        .append("""   <div class="title">""")
-                        .append("""     <a href="${it.url}">${it.title}</a>""")
-                        .append("""   </div>""")
-                        .append("""   <div class="comment">""")
-                        .append("""     ${it.comment}""")
-                        .append("""   </div>""")
-                        .append("  </li>")
-                        .append("\n")
-            }
-            content.append("</ul>\n")
-            log.info("Posting new article:\n$title\n${content}")
-            val postContent = Template.render("post.mustache", mapOf(
-                    "content" to content
-            ))
+
+            val mf = DefaultMustacheFactory()
+            val mustache = mf.compile("post.mustache")
+            val writer = StringWriter()
+            mustache.execute(writer, mapOf("links" to links)).flush()
+            val postContent = writer.toString()
+
             post(title, postContent, title)
         } else {
             log.info("No new links to post")
