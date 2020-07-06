@@ -1,22 +1,40 @@
 <html>
     <head>
         <title>Submitting a new link</title>
+        <style>
+            body {
+                background: #f8f4e5;
+                padding: 50px 100px;
+            }
+            label, input, textarea {
+                font-size: 12pt;
+                line-height: 24pt;
+                width: 80%;
+            }
+            label {
+                font-size: 18px;
+                font-weight: bold;
+            }
+            textarea {
+                width: 80%;
+            }
+        </style>
     </head>
     <body>
         <form method="post" action="{{host}}/insertLink" onsubmit="sendData()">
-            <p>
-                URL
-                <input size="80" name="url" value="{{url}}"/>
-            </p>
+            <label for="url">URL</label>
+            <div>
+                <input size="80" id="url" name="url" value="{{url}}"/>
+            </div>
 
-            <p>
-                Title
-                <input size="80" name="title" value="{{title}}"/>
-            </p>
-            <p>
-                Comment
-                <textarea style="width:300px; height:200px" name="comment" value="{{comment}}">
-                </textarea>
+            <label for="title">TITLE</label>
+            <div>
+                <input size="80" id="title" name="title" value="{{title}}"/>
+            </div>
+            <label for="comment">COMMENT</label>
+            <div>
+                <textarea id="comment" name="comment" value="{{comment}}"></textarea>
+            </div>
             </p>
             <p>
                 <input type="submit" value="Submit">
