@@ -99,10 +99,13 @@ jar {
 }
 
 task copyToLib(dependsOn: ['stage'], type: Copy) {
-    new File("cedlinks-1.0-all.jar").delete()
-    new File("build/libs").listFiles().each { f ->
-        f.renameTo("cedlinks-1.0-all.jar")
+    String jar = "cedlinks-1.0-all.jar"
+    doFirst {
+        new File(jar).delete()
     }
+    def files = new File("build/libs").listFiles()
+    from files ? files[0] : "."
+    into "."
 }
 
 heroku {
