@@ -47,6 +47,7 @@ class CedLinksService {
             @QueryParam("title") title: String? = null,
             @QueryParam("comment") comment: String? = null): String {
         val result = Template.render("submitLink.html", mapOf(
+                "url" to url,
                 "comment" to comment,
                 "title" to title,
                 "host" to Config.host
