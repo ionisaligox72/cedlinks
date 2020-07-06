@@ -101,9 +101,10 @@ jar {
 task copyToLib(dependsOn: ['stage']) {
     String jar = "cedlinks-1.0-all.jar"
     doLast {
+        new File(jar).delete()
         def files = new File("build/libs").listFiles()
         println("Found files: "+ files)
-        java.nio.file.Files.copy(java.nio.file.Paths.get(files[0].path), java.nio.file.Paths.get("."))
+        java.nio.file.Files.copy(java.nio.file.Paths.get(files[0].path), java.nio.file.Paths.get(jar))
     }
 }
 
