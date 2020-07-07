@@ -24,10 +24,15 @@ class CedLinksService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("insertLink")
     fun insertLink(@FormParam("url") url: String, @FormParam("title") title: String,
-            @FormParam("comment") comment: String, @FormParam("imageUrl") imageUrl: String? = null): Response {
+            @FormParam("comment") comment: String, @FormParam("imageUrl") imageUrl: String? = null,
+            @FormParam("time") time: String): Response {
         val result = try {
-            dao.insertLink(url, title, comment, imageUrl)
-            Response.seeOther(URI(url))
+            if (time != Config.time) {
+                Response.status(Response.Status.UNAUTHORIZED)
+            } else {
+                dao.insertLink(url, title, comment, imageUrl)
+                Response.seeOther(URI(url))
+            }
         } catch(ex: Exception) {
             log.error("Error: " + ex.message, ex)
             Response.serverError()
@@ -50,12 +55,15 @@ class CedLinksService {
     fun submitLink(
             @QueryParam("url") url: String = "",
             @QueryParam("title") title: String? = null,
-            @QueryParam("comment") comment: String? = null): String {
+            @QueryParam("comment") comment: String? = null,
+            @QueryParam("time") time: String? = null
+        ): String {
         val result = Template.render("submitLink.mustache", mapOf(
                 "url" to url,
                 "comment" to comment,
                 "title" to title,
-                "host" to Config.host
+                "host" to Config.host,
+                "time" to time
         ))
         return result
     }

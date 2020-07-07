@@ -13,4 +13,5 @@ object Config {
     val wpUser = envOrLocal("WP_USER")
     val wpPassword = envOrLocal("WP_PASSWORD")
     val host = envOrLocal("HOST")
+    val time = envOrLocal("TIME")
 }
