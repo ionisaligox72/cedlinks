@@ -1,6 +1,3 @@
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -96,20 +93,6 @@ shadowJar {
 // Heroku
 
 task stage(dependsOn: ['shadowJar', 'clean'])
-
-jar {
-    archiveBaseName = "ced-links"
-    archiveVersion = "1.0"
-}
-
-task copyToLib(dependsOn: ['stage']) {
-    doLast {
-        String jar = "cedlinks-1.0-all.jar"
-        def files = new File("build/libs").listFiles()
-        println("Found files: "+ files)
-        Files.copy(Paths.get(files[0].path), Paths.get(jar), StandardCopyOption.REPLACE_EXISTING)
-    }
-}
 
 heroku {
     appName = 'ced-links'
