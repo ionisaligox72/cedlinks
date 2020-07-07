@@ -9,9 +9,6 @@ import javax.ws.rs.core.Response
 @Path("/")
 class CedLinksService {
     private val log = LoggerFactory.getLogger(CedLinksService::class.java)
-    private lateinit var url: String
-    private lateinit var title: String
-    private lateinit var tags: String
     private val dao = Dao()
 
     @GET
@@ -35,7 +32,7 @@ class CedLinksService {
             }
         } catch(ex: Exception) {
             log.error("Error: " + ex.message, ex)
-            Response.serverError()
+            Response.serverError().entity(ex.message)
         }
         return result.build()
     }

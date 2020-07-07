@@ -3,9 +3,7 @@ package com.beust.cedlinks
 object Config {
     private val lp = LocalProperties()
 
-    private fun envOrLocal(name: String): String {
-        return System.getenv(name) ?: lp.get(name)
-    }
+    private fun envOrLocal(name: String): String = System.getenv(name) ?: lp.get(name)
 
     val jdbcUrl = envOrLocal("JDBC_URL")
     val jdbcUser = envOrLocal("JDBC_USER")
