@@ -78,6 +78,7 @@ run {
 }
 
 shadowJar {
+    baseName "ced-links"
     mergeServiceFiles()
     exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
     manifest {
