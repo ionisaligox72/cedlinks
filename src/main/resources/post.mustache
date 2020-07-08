@@ -1,8 +1,8 @@
 <style>
-    ul {
+    .links {
+        font-family: Lucida Bright;
         list-style: none;
         padding: 5px;
-        font-family: Lucida Bright;
     }
     a:link {
         text-decoration: none;
@@ -10,23 +10,23 @@
     .comment {
         margin: 0 10px 15px 15px;
         font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border-left: solid 1px;
+        padding: 0 0 0 5px;
     }
     .title {
-        margin: 5px 0px 0 0px;
+        margin: 5px 0px 5px 0px;
         font-size: 1.3em;
         font-weight: bold;
     }
-    li {
-        margin: 5px;
-    }
     .corners {
+        margin: 5px;
         border-radius: 10px;
         background: #EDEB9F;
         padding: 5px 5px 2px 20px;
     }
 </style>
 
-<ul>
+<ul class="links">
     {{#links}}
     <li class="corners">
         <div class="title">
