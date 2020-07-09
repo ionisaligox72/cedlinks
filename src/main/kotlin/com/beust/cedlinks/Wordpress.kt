@@ -12,21 +12,15 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 import java.io.IOException
 import java.time.LocalDateTime
-import java.io.PrintWriter
-
-import com.github.mustachejava.DefaultMustacheFactory
-
-import com.github.mustachejava.MustacheFactory
-import java.io.StringWriter
-
 
 open class Link(open val url: String, open val title: String, open val comment: String, open val imageUrl: String?)
 
 class Wordpress {
     private val log = LoggerFactory.getLogger(Wordpress::class.java)
+    private val dao = Dao()
 
     class BasicAuthInterceptor(user: String?, password: String?) : Interceptor {
-        private val credentials: String
+        private val credentials: String = Credentials.basic(user!!, password!!)
 
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain): Response {
@@ -34,10 +28,6 @@ class Wordpress {
             val authenticatedRequest: Request = request.newBuilder()
                     .header("Authorization", credentials).build()
             return chain.proceed(authenticatedRequest)
-        }
-
-        init {
-            credentials = Credentials.basic(user!!, password!!)
         }
     }
 
@@ -63,20 +53,23 @@ class Wordpress {
         fun post(@Body request: PostRequest): Call<PostResponse>
     }
 
-    class PostRequest(val title: String, val content: String, val excerpt: String)
+    @Suppress("unused")
+    class PostRequest(val title: String, val content: String, val excerpt: String, val status: String)
+    @Suppress("unused")
     class PostResponse(val id: Long, val date: String)
 
-    fun post(title: String, content: String, excerpt: String) {
-        val r = retrofit.post(PostRequest(title, content, excerpt)).execute()
+    fun post(title: String, content: String, excerpt: String, draft: Boolean) {
+        val status = if (draft) "draft" else "publish"
+        val r = retrofit.post(PostRequest(title, content, excerpt, status)).execute()
         log.info("ID: " + r.body()?.id)
     }
 
-    fun postNewArticle(links: List<Link>) {
+    fun postNewArticle(links: List<Link>, draft: Boolean) {
         if (links.isNotEmpty()) {
             val date = Dates.formatShortDate(LocalDateTime.now())
-            val title = "Links for $date"
-            val postContent = Dao().linksToHtml(links)
-            post(title, postContent, title)
+            val title = "Interesting reads - $date"
+            val postContent = dao.linksToHtml(links)
+            post(title, postContent, title, draft)
         } else {
             log.info("No new links to post")
         }
@@ -84,5 +77,5 @@ class Wordpress {
 }
 
 fun main() {
-    Wordpress().post("from Kotlin", "content Kotlin", "excerpt Kotlin")
+    Wordpress().post("from Kotlin", "content Kotlin", "excerpt Kotlin", draft = true)
 }

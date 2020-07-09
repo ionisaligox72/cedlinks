@@ -22,6 +22,9 @@ class Dao {
                 it[Links.saved] = Dates.formatDate(LocalDateTime.now())
             }
         }
+        if (listLinks().size >= 6) {
+            publish(markPublished = true)
+        }
     }
 
     fun listLinks(all: Boolean = false): List<LinkFromDb> {
@@ -54,12 +57,12 @@ class Dao {
         return Template.render("post.mustache", mapOf("links" to links))
     }
 
-    fun publish(markPublished: Boolean): Response {
+    fun publish(markPublished: Boolean, draft: Boolean = true): Response {
         val links = listLinks()
         val ids = links.map { it.id }
 
         val result = try {
-            Wordpress().postNewArticle(links)
+            Wordpress().postNewArticle(links, draft)
             if (markPublished) {
                 transaction {
                     val date = Dates.formatDate(LocalDateTime.now())
