@@ -7,8 +7,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
+import javax.inject.Singleton
 import javax.ws.rs.core.Response
 
+@Singleton
 class Dao {
     private val log = LoggerFactory.getLogger(Dao::class.java)
 

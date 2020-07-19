@@ -11,7 +11,7 @@ fun initDb() {
 
 
 fun main(args: Array<String>) {
-//    initDb()
+    initDb()
     build()
         .args(*args)
         .packages("com.beust.cedlinks")

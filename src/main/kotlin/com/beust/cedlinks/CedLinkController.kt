@@ -6,25 +6,29 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
+import io.micronaut.http.annotation.QueryValue
 import javax.annotation.PostConstruct
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+import javax.ws.rs.GET
+import javax.ws.rs.Path
+import javax.ws.rs.QueryParam
 
-@Controller("/hello")
-class HelloController @Inject constructor(private val db: Database) {
-    @Get("/")
+@Controller("/")
+class CedLinkController @Inject constructor(private val dao: Dao) {
+
+    @Get("list")
     @Produces(MediaType.TEXT_PLAIN)
-    fun index(): String {
-        val context = ApplicationContext.run()
-        val environment = context.environment
-        val port = environment.getProperty("database.port", String::class.java)
-        return "Hello World: " + db.port
-    }
-}
+    fun list(@QueryValue("all", defaultValue = "false") all: Boolean) = dao.listLinks(all)
 
-@Singleton
-class Database {
-    @Value("\${database.port}")
-    var port: Int = 0
+
+//    @Get("/")
+//    @Produces(MediaType.TEXT_PLAIN)
+//    fun index(@QueryValue("name", defaultValue = "Unknown") name: String): String {
+//        val context = ApplicationContext.run()
+//        val environment = context.environment
+//        val port = environment.getProperty("database.port", String::class.java)
+//        return "Hello $name: " + db.port
+//    }
 }
