@@ -8,9 +8,6 @@ import io.micronaut.http.annotation.Produces
 import org.slf4j.LoggerFactory
 import java.net.URI
 import javax.inject.Inject
-import javax.ws.rs.GET
-import javax.ws.rs.Path
-import javax.ws.rs.QueryParam
 
 @Controller("/")
 class CedLinkController @Inject constructor(private val dao: Dao) {

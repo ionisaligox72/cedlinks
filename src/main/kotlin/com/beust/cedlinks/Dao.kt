@@ -1,5 +1,6 @@
 package com.beust.cedlinks
 
+import io.micronaut.http.HttpResponse
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
@@ -8,7 +9,6 @@ import org.jetbrains.exposed.sql.update
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 import javax.inject.Singleton
-import javax.ws.rs.core.Response
 
 @Singleton
 class Dao {
@@ -59,7 +59,7 @@ class Dao {
         return Template.render("post.mustache", mapOf("links" to links))
     }
 
-    fun publish(markPublished: Boolean, draft: Boolean = true): Response {
+    fun publish(markPublished: Boolean, draft: Boolean = true): HttpResponse<String> {
         val links = listLinks()
         val ids = links.map { it.id }
 
@@ -74,12 +74,12 @@ class Dao {
                     }
                 }
             }
-            Response.ok()
+            HttpResponse.ok<String>()
         } catch(ex: Exception) {
             log.error("Error posting", ex)
-            Response.serverError().entity(ex.message)
+            HttpResponse.serverError<String>().body(ex.message)
         }
 
-        return result.build()
+        return result
     }
 }

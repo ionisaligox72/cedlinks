@@ -72,24 +72,25 @@ dependencies {
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
-        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
-        "com.google.inject:guice:4.2.0",
-        "io.dropwizard:dropwizard-core:$dropWizardVersion",
-        "io.dropwizard:dropwizard-views-mustache:$dropWizardVersion",
-        "com.github.spullara.mustache.java:compiler:0.9.6",
-        "com.squareup.retrofit2:retrofit:2.9.0",
-        "com.squareup.retrofit2:converter-gson:2.9.0",
+    compile "com.github.spullara.mustache.java:compiler:0.9.6",
         "org.postgresql:postgresql:42.2.14.jre7",
         "org.jetbrains.exposed:exposed:0.12.1",
+
+//        "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+//        "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
+//        "com.google.inject:guice:4.2.0",
+//        "io.dropwizard:dropwizard-core:$dropWizardVersion",
+//        "io.dropwizard:dropwizard-views-mustache:$dropWizardVersion",
+        "com.squareup.retrofit2:retrofit:2.9.0",
+        "com.squareup.retrofit2:converter-gson:2.9.0",
         "com.squareup.okhttp3:logging-interceptor:3.9.0"
 
-    implementation platform("ru.vyarus:dropwizard-guicey:5.1.0")
+//    implementation platform("ru.vyarus:dropwizard-guicey:5.1.0")
 
     // no need to specify versions
-    implementation 'ru.vyarus:dropwizard-guicey'
+//    implementation 'ru.vyarus:dropwizard-guicey'
 
-    implementation 'io.dropwizard:dropwizard-auth'
+//    implementation 'io.dropwizard:dropwizard-auth'
 //    implementation 'com.google.inject:guice-assistedinject'
 
 //    testImplementation 'io.dropwizard:dropwizard-test'
