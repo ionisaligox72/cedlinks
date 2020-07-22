@@ -8,6 +8,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
@@ -82,4 +83,18 @@ class Dao {
 
         return result
     }
+
+    @Inject
+    private lateinit var rss: Rss
+
+    fun rss(): String = rss.feed
+
+    fun insertPodcast(url: String, title: String) {
+        println("Inserting podcast: $url")
+    }
+
+    fun podcast(): String {
+        return Template.render("submitPodcast.mustache")
+    }
+
 }

@@ -1,0 +1,49 @@
+<html>
+<head>
+    <title>Submitting a new podcast</title>
+    <style>
+        body {
+            background: #f8f4e5;
+            padding: 50px 100px;
+        }
+        label, input, textarea {
+            font-size: 12pt;
+            line-height: 24pt;
+            width: 80%;
+        }
+        label {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 80%;
+        }
+        div {
+            margin-bottom: 10px;
+            margin-top: 0px;
+        }
+    </style>
+</head>
+<body>
+<form method="post" action="{{host}}/insertPodcast">
+    <label for="url">URL</label>
+    <div>
+        <input id="url" name="url" value="{{url}}"/>
+    </div>
+    <label for="title">TITLE</label>
+    <div>
+        <input id="title" name="title" value="{{title}}"/>
+    </div>
+    <input type="hidden" name="time" id="time" value="{{time}}"/>
+    </p>
+    <p>
+        <input type="submit" value="Submit">
+    </p>
+</form>
+</body>
+
+
+<!--
+document.location.href="http://localhost:9000/submit?url=" + document.location.href + "&title=" + document.title;
+-->
+</html>

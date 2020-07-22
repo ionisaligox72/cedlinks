@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<rss version="2.0"
+     xmlns:dc="https://purl.org/dc/elements/1.1/"
+     xmlns:sy="https://purl.org/rss/1.0/modules/syndication/"
+     xmlns:admin="https://webns.net/mvcb/"
+     xmlns:rdf="https://www.w3.org/1999/02/22-rdf-syntax-ns#"
+>
+    <channel>
+        <title>beust.com audio files</title>
+        <link>https://beust.com/audio</link>
+        <description>beust.com audio</description>
+        <dc:language>en-us</dc:language>
+        <dc:creator>cedric@beust.com</dc:creator>
+        <dc:date>{{date}}</dc:date>
+        <sy:updatePeriod>daily</sy:updatePeriod>
+        <sy:updateFrequency>1</sy:updateFrequency>
+        {{#items}}
+            <item>
+                <title>{{title}}</title>
+                <link>{{link}}</link>
+                <description>{{description}}</description>
+            </item>
+        {{/items}}
+    </channel>
+</rss>

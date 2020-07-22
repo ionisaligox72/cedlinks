@@ -6,7 +6,7 @@ import java.io.StringWriter
 object Template {
     private val mf = DefaultMustacheFactory()
 
-    fun render(file: String, map: Any?): String {
+    fun render(file: String, map: Any = emptyMap<String, Any>()): String {
         mf.compile(file).let { mustache ->
             StringWriter().let { writer ->
                 mustache.execute(writer, map).flush()
