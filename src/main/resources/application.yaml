@@ -2,7 +2,7 @@ micronaut:
   application:
     name: ced-links
   server:
-    port: 9000
+    port: $PORT
 
 database:
   port: 5432
