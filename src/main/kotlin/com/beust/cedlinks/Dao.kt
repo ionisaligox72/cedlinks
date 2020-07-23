@@ -101,10 +101,8 @@ class Dao {
         val podcasts = arrayListOf<Rss.Item>()
         transaction {
             Podcasts.selectAll().forEach {
-                podcasts.add(Rss.Item(it[Podcasts.url], it[Podcasts.title], it[Podcasts.saved]))
+                podcasts.add(Rss.Item(it[Podcasts.title], it[Podcasts.url], it[Podcasts.saved]))
             }
-
-            println("Podcasts: $podcasts")
         }
         return Template.render("rss.mustache", Rss.Feed(Dates.formatDate(LocalDateTime.now()), podcasts))
     }
