@@ -161,21 +161,21 @@ tasks.withType(JavaExec) {
 //    args = ['server', 'config.yml']
 //}
 
-//shadowJar {
-//    baseName "ced-links"
-//    mergeServiceFiles()
-//    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
-//    manifest {
-//        attributes 'Implementation-Title': rootProject.name
-//        attributes 'Implementation-Version': rootProject.version
-//        attributes 'Implementation-Vendor-Id': rootProject.group
-//        attributes 'Build-Time': ZonedDateTime.now(ZoneId.of("UTC"))
-//                .format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
-//        attributes 'Built-By': InetAddress.localHost.hostName
-//        attributes 'Created-By': 'Gradle ' + gradle.gradleVersion
-//        attributes 'Main-Class': mainClassName
-//    }
-//}
+shadowJar {
+    baseName "ced-links"
+    mergeServiceFiles()
+    exclude 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.SF'
+    manifest {
+        attributes 'Implementation-Title': rootProject.name
+        attributes 'Implementation-Version': rootProject.version
+        attributes 'Implementation-Vendor-Id': rootProject.group
+        attributes 'Build-Time': ZonedDateTime.now(ZoneId.of("UTC"))
+                .format(DateTimeFormatter.ISO_ZONED_DATE_TIME)
+        attributes 'Built-By': InetAddress.localHost.hostName
+        attributes 'Created-By': 'Gradle ' + gradle.gradleVersion
+        attributes 'Main-Class': mainClassName
+    }
+}
 
 // Heroku
 
