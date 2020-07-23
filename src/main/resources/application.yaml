@@ -2,7 +2,7 @@ micronaut:
   application:
     name: ced-links
   server:
-    host: localhost
+    host: ced-links.herokuapp.com
     port: $PORT
 
 database:
