@@ -5,10 +5,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.*
 import io.micronaut.http.annotation.Produces
-import io.micronaut.http.multipart.StreamingFileUpload
-import io.reactivex.Single
 import org.slf4j.LoggerFactory
-import java.io.File
 import java.net.URI
 import javax.inject.Inject
 
@@ -65,6 +62,10 @@ class CedLinkController @Inject constructor(private val dao: Dao) {
     @Get("rss")
     @Produces(MediaType.APPLICATION_XML)
     fun rss(): String = dao.rss()
+
+    @Get("submitPodcast")
+    @Produces(MediaType.TEXT_HTML)
+    fun submitPodcast(): String = dao.submitPodcast()
 
     @Post("insertPodcast")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

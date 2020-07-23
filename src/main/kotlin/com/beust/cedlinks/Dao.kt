@@ -95,6 +95,8 @@ class Dao {
         }
     }
 
+    fun submitPodcast(): String = Template.render("submitPodcast.mustache")
+
     fun rss(): String {
         val podcasts = arrayListOf<Rss.Item>()
         transaction {
@@ -102,7 +104,6 @@ class Dao {
                 podcasts.add(Rss.Item(it[Podcasts.url], it[Podcasts.title], it[Podcasts.saved]))
             }
 
-//            val result = Podcasts.selectAll().limit(10).orderBy(Podcasts.saved to SortOrder.DESC).execute(this)
             println("Podcasts: $podcasts")
         }
         return Template.render("rss.mustache", Rss.Feed(Dates.formatDate(LocalDateTime.now()), podcasts))
