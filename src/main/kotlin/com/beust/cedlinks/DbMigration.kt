@@ -57,9 +57,9 @@ class DbMigration {
                     " (id serial, url TEXT, imageUrl TEXT, title TEXT, comment TEXT, saved TEXT, published TEXT)")
         }
         if (version == 1) {
-//            upgrade(1, 2) {
-//                statement.execute("ALTER TABLE users ADD COLUMN last_login VARCHAR(50)")
-//            }
+            upgrade(1, 2) {
+                statement.execute("CREATE TABLE IF NOT EXISTS podcasts (id serial, url TEXT, title TEXT, saved TEXT)")
+            }
         }
 //        transaction {
 //            statement.execute("CREATE DATABASE $databaseName")

@@ -17,3 +17,11 @@ data class LinkFromDb(val id: Int, override val url: String, override val title:
         override val imageUrl: String?, val saved: String? = null, val published: String? = null)
     : Link(url, title, comment, imageUrl)
 
+object Podcasts: Table("podcasts") {
+    val id: Column<Int> = Podcasts.integer("id").autoIncrement().primaryKey()
+    val url = Podcasts.text("url")
+    val title = Podcasts.text("title")
+    val saved = Podcasts.text("saved")
+}
+
+data class PodcastFromDb(val id: Int, val url: String, val title: String)

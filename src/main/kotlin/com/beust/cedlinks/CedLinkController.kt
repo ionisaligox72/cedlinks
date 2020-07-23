@@ -66,10 +66,6 @@ class CedLinkController @Inject constructor(private val dao: Dao) {
     @Produces(MediaType.APPLICATION_XML)
     fun rss(): String = dao.rss()
 
-    @Get("podcast")
-    @Produces(MediaType.TEXT_HTML)
-    fun podcast(): String = dao.podcast()
-
     @Post("insertPodcast")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)

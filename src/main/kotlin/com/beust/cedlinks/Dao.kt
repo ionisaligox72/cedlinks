@@ -1,11 +1,8 @@
 package com.beust.cedlinks
 
 import io.micronaut.http.HttpResponse
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -87,14 +84,28 @@ class Dao {
     @Inject
     private lateinit var rss: Rss
 
-    fun rss(): String = rss.feed
-
     fun insertPodcast(url: String, title: String) {
-        println("Inserting podcast: $url")
+        transaction {
+            Podcasts.insert {
+                it[Podcasts.url] = url
+                it[Podcasts.title] = title
+                it[Podcasts.saved] = Dates.formatDate(LocalDateTime.now())
+            }
+            log.info("Inserted new podcast $url - $title")
+        }
     }
 
-    fun podcast(): String {
-        return Template.render("submitPodcast.mustache")
+    fun rss(): String {
+        val podcasts = arrayListOf<Rss.Item>()
+        transaction {
+            Podcasts.selectAll().forEach {
+                podcasts.add(Rss.Item(it[Podcasts.url], it[Podcasts.title], it[Podcasts.saved]))
+            }
+
+//            val result = Podcasts.selectAll().limit(10).orderBy(Podcasts.saved to SortOrder.DESC).execute(this)
+            println("Podcasts: $podcasts")
+        }
+        return Template.render("rss.mustache", Rss.Feed(Dates.formatDate(LocalDateTime.now()), podcasts))
     }
 
 }
