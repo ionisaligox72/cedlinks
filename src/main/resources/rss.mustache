@@ -17,8 +17,10 @@
         {{#items}}
             <item>
                 <title>{{title}}</title>
-                <enclosure url="{{link}}" length="0" type="audio/mpeg" />
+                <link>{{link}}</link>
                 <description>{{description}}</description>
+                <guid isPermalink="false">1</guid>
+                <enclosure url="{{link}}" length="0" type="audio/mpeg" />
             </item>
         {{/items}}
     </channel>
