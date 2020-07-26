@@ -6,7 +6,7 @@ import javax.inject.Singleton
 @Singleton
 class Rss {
     data class Feed(val date: String, val items: List<Item>)
-    data class Item(val title: String, val link: String, val description: String = "")
+    data class Item(val title: String, val link: String, val saved: String = "")
     private val items = listOf(Item("Item 1", "Link 1"), Item("Item 2", "Link 2"))
     private val currentFeed = Feed(Dates.formatDate(LocalDateTime.now()), items)
 
