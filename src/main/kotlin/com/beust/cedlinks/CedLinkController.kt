@@ -10,7 +10,7 @@ import java.net.URI
 import javax.inject.Inject
 
 @Controller("/")
-class CedLinkController @Inject constructor(private val dao: Dao) {
+class CedLinkController @Inject constructor(private val dao: Dao): BaseController() {
     private val log = LoggerFactory.getLogger(CedLinkController::class.java)
 
     @Get("list")
@@ -40,20 +40,11 @@ class CedLinkController @Inject constructor(private val dao: Dao) {
     @Produces(MediaType.APPLICATION_JSON)
     fun insertLink(url: String, title: String,
             comment: String, imageUrl: String? = null,
-            time: String): HttpResponse<String> {
-        val result = try {
-            if (time != Config.time) {
-                HttpResponse.status<String>(HttpStatus.UNAUTHORIZED)
-            } else {
-                dao.insertLink(url, title, comment, imageUrl)
-                HttpResponse.redirect<String>(URI(url))
-            }
-        } catch(ex: Exception) {
-            log.error("Error: " + ex.message, ex)
-            HttpResponse.serverError<String>().body(ex.message)
+            time: String): HttpResponse<String> =
+        timeRequest(time) {
+            dao.insertLink(url, title, comment, imageUrl)
+            HttpResponse.redirect<String>(URI(url))
         }
-        return result
-    }
 
     @Get("preview")
     @Produces(MediaType.TEXT_HTML)
