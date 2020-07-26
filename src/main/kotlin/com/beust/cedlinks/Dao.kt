@@ -81,9 +81,6 @@ class Dao {
         return result
     }
 
-    @Inject
-    private lateinit var rss: Rss
-
     fun insertPodcast(url: String, title: String) {
         transaction {
             Podcasts.insert {
@@ -100,7 +97,11 @@ class Dao {
     fun rss(): String {
         val podcasts = arrayListOf<Rss.Item>()
         transaction {
-            Podcasts.selectAll().forEach {
+            Podcasts.selectAll()
+                    .orderBy(Podcasts.saved to SortOrder.DESC)
+                    .limit(10)
+                    .sortedBy { Podcasts.saved }
+                    .forEach {
                 podcasts.add(Rss.Item(it[Podcasts.title], it[Podcasts.url], it[Podcasts.saved]))
             }
         }
