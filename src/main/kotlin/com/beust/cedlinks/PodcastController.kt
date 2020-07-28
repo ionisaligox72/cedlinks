@@ -18,7 +18,7 @@ class PodcastController @Inject constructor(private val dao: Dao): BaseControlle
 
     @Get("submit")
     @Produces(MediaType.TEXT_HTML)
-    fun submitPodcast(): String = dao.submitPodcast()
+    fun submitPodcast(@QueryValue("time") time: String? = null): String = dao.submitPodcast(time)
 
     @Post("insert")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

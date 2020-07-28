@@ -92,7 +92,8 @@ class Dao {
         }
     }
 
-    fun submitPodcast(): String = Template.render("submitPodcast.mustache")
+    fun submitPodcast(time: String?): String = Template.render("submitPodcast.mustache",
+            mapOf("time" to time))
 
     fun rss(): String {
         val podcasts = arrayListOf<Rss.Item>()
