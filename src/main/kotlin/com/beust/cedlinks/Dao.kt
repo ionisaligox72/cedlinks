@@ -60,18 +60,18 @@ class Dao {
         return Template.render("post.mustache", mapOf("links" to links))
     }
 
-    fun publish(markPublished: Boolean, draft: Boolean = true): HttpResponse<String> {
+    private fun publish(markPublished: Boolean, draft: Boolean = true): HttpResponse<String> {
         val links = listLinks()
         val ids = links.map { it.id }
 
-        val result = try {
+        return try {
             Wordpress().postNewArticle(links, draft)
             if (markPublished) {
                 transaction {
                     val date = Dates.formatDate(LocalDateTime.now())
                     Links.update({ Links.id.inList(ids) }) {
                         log.info("Updating ids to $date")
-                        it[Links.published] = date
+                        it[published] = date
                     }
                 }
             }
@@ -80,8 +80,6 @@ class Dao {
             log.error("Error posting", ex)
             HttpResponse.serverError<String>().body(ex.message)
         }
-
-        return result
     }
 
     fun insertPodcast(url: String, title: String) {
@@ -89,7 +87,7 @@ class Dao {
             Podcasts.insert {
                 it[Podcasts.url] = url
                 it[Podcasts.title] = title
-                it[Podcasts.saved] = Dates.formatDate(LocalDateTime.now())
+                it[saved] = Dates.formatDate(LocalDateTime.now())
             }
             log.info("Inserted new podcast $url - $title")
         }
