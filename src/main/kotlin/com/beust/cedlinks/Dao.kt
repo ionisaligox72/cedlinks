@@ -4,26 +4,29 @@ import io.micronaut.http.HttpResponse
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
+import java.net.URI
 import java.time.LocalDateTime
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class Dao {
     private val log = LoggerFactory.getLogger(Dao::class.java)
 
-    fun insertLink(url: String, title: String, comment: String, imageUrl: String? = null) {
+    fun insertLink(url: String, title: String, comment: String, imageUrl: String? = null): HttpResponse<String> {
         transaction {
             Links.insert {
                 it[Links.url] = url
                 it[Links.title] = title
                 it[Links.comment] = comment
                 if (imageUrl != null) it[Links.imageUrl] = imageUrl
-                it[Links.saved] = Dates.formatDate(LocalDateTime.now())
+                it[saved] = Dates.formatDate(LocalDateTime.now())
             }
         }
-        if (listLinks().size >= 6) {
+        return if (listLinks().size >= 6) {
             publish(markPublished = true)
+            HttpResponse.redirect<String>(URI("https://beust.com/weblog/wp-admin/edit.php"))
+        } else {
+            HttpResponse.redirect<String>(URI(url))
         }
     }
 

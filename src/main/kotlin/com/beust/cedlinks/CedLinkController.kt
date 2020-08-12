@@ -43,7 +43,6 @@ class CedLinkController @Inject constructor(private val dao: Dao): BaseControlle
             time: String): HttpResponse<String> =
         timeRequest(time) {
             dao.insertLink(url, title, comment, imageUrl)
-            HttpResponse.redirect<String>(URI(url))
         }
 
     @Get("preview")
