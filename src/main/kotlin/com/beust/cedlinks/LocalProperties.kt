@@ -1,15 +1,15 @@
 package com.beust.cedlinks
 
-import org.jboss.logging.Logger
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
+import org.slf4j.LoggerFactory
 
 /**
  * Encapsulate read access to local.properties.
  */
 class LocalProperties {
-    private val log = Logger.getLogger(LocalProperties::class.java)
+    private val log = LoggerFactory.getLogger(LocalProperties::class.java)
 
     private val DIRS = listOf(Paths.get("."),
             Paths.get(System.getProperty("user.home"), ".settings"))
