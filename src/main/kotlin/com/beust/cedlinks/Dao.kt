@@ -22,12 +22,13 @@ class Dao {
                 it[saved] = Dates.formatDate(LocalDateTime.now())
             }
         }
-        return if (listLinks().size >= 6) {
+        val redirectUrl = if (listLinks().size >= 6) {
             publish(markPublished = true)
-            HttpResponse.redirect<String>(URI("https://beust.com/weblog/wp-admin/edit.php"))
+            "https://beust.com/weblog/wp-admin/edit.php"
         } else {
-            HttpResponse.redirect<String>(URI(url))
+            url
         }
+        return HttpResponse.redirect<String>(URI(redirectUrl))
     }
 
     fun listLinks(all: Boolean = false): List<LinkFromDb> {
