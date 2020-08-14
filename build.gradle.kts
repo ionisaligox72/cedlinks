@@ -26,11 +26,6 @@ object This {
     val artifactId = "cedlinks"
     val description = "CedLinks"
     val url = "https://github.com/cbeust/cedlinks"
-    val scm = "github.com/cbeust/cedlinks.git"
-
-    // Should not need to change anything below
-    val issueManagementUrl = "https://$scm/issues"
-    val isSnapshot = version.contains("SNAPSHOT")
 }
 
 allprojects {
@@ -55,22 +50,20 @@ dependencies {
     listOf(kotlin("stdlib"),
             "io.micronaut:micronaut-runtime:${Version.micronaut}",
             "io.micronaut:micronaut-http-server-netty:${Version.micronaut}",
-            "ch.qos.logback:logback-classic:1.2.3").forEach {
+            "ch.qos.logback:logback-classic:1.2.3",
+            "com.github.spullara.mustache.java:compiler:0.9.6",
+            "org.postgresql:postgresql:42.2.14.jre7",
+            "org.jetbrains.exposed:exposed:0.12.1",
+            "com.squareup.retrofit2:retrofit:2.9.0",
+            "com.squareup.retrofit2:converter-gson:2.9.0",
+            "com.squareup.okhttp3:logging-interceptor:3.9.0"
+    ).forEach {
         implementation(it)
     }
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.7")
 
-    listOf("com.github.spullara.mustache.java:compiler:0.9.6",
-            "org.postgresql:postgresql:42.2.14.jre7",
-            "org.jetbrains.exposed:exposed:0.12.1",
-            "com.squareup.retrofit2:retrofit:2.9.0",
-            "com.squareup.retrofit2:converter-gson:2.9.0",
-            "com.squareup.okhttp3:logging-interceptor:3.9.0").forEach {
-        implementation(it)
-    }
-
-    testCompile("org.testng:testng:6.14.3")
+    testImplementation("org.testng:testng:7.0.3")
 }
 
 allOpen {
@@ -104,7 +97,7 @@ application {
 
 tasks {
     named<ShadowJar>("shadowJar") {
-        baseName = "ced-links"
+        archiveBaseName.set("ced-links")
         mergeServiceFiles()
 //        excludes = listOf("META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.SF")
         manifest {
