@@ -118,6 +118,6 @@ tasks.register("stage") {
     dependsOn("clean", "shadowJar")
 }
 
-with(heroku) {
+heroku {
     appName = "ced-links"
 }
