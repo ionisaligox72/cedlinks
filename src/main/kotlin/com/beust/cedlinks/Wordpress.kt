@@ -13,7 +13,7 @@ import retrofit2.http.POST
 import java.io.IOException
 import java.time.LocalDateTime
 
-open class Link(open val url: String, open val title: String, open val comment: String, open val imageUrl: String?)
+open class Link(open val url: String, open val title: String, open val comment: String?, open val imageUrl: String?)
 
 class Wordpress {
     private val log = LoggerFactory.getLogger(Wordpress::class.java)

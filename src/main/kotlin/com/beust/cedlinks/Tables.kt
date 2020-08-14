@@ -7,13 +7,13 @@ object Links: Table("links") {
     val id: Column<Int> = integer("id").autoIncrement().primaryKey()
     val url = text("url")
     val title = text("title")
-    val comment = text("comment")
+    val comment = text("comment").nullable()
     val imageUrl = text("imageurl").nullable()
     val saved = text("saved")
     val published = text("published").nullable()
 }
 
-data class LinkFromDb(val id: Int, override val url: String, override val title: String, override val comment: String,
+data class LinkFromDb(val id: Int, override val url: String, override val title: String, override val comment: String?,
         override val imageUrl: String?, val saved: String? = null, val published: String? = null)
     : Link(url, title, comment, imageUrl)
 
