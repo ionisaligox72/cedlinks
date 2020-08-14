@@ -117,8 +117,8 @@ tasks {
 
 // Heroku
 
-tasks.named("stage") {
-    dependsOn("shadowJar", "clean")
+tasks.register("stage") {
+    dependsOn("clean", "shadowJar")
 }
 
 //heroku {
