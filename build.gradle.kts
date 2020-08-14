@@ -5,9 +5,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     application
-    kotlin("jvm") version "1.3.72"
-    kotlin("kapt") version "1.3.72"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.3.72"
+    listOf("jvm", "kapt", "plugin.allopen").forEach { kotlin(it) version "1.3.72" }
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("application")
     id("com.heroku.sdk.heroku-gradle") version "2.0.0"
