@@ -21,7 +21,7 @@ buildscript {
 }
 
 object This {
-    val version = "0.1"
+    val version = "1.0"
     val groupId = "com.beust"
     val artifactId = "cedlinks"
     val description = "CedLinks"
@@ -31,6 +31,11 @@ object This {
     // Should not need to change anything below
     val issueManagementUrl = "https://$scm/issues"
     val isSnapshot = version.contains("SNAPSHOT")
+}
+
+allprojects {
+    group = This.groupId
+    version = This.version
 }
 
 object Version {
