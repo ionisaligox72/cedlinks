@@ -10,6 +10,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.allopen") version "1.3.72"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("application")
+    id("com.heroku.sdk.heroku-gradle") version "2.0.0"
 }
 
 buildscript {
@@ -121,6 +122,6 @@ tasks.register("stage") {
     dependsOn("clean", "shadowJar")
 }
 
-//heroku {
-//    appName = "ced-links"
-//}
+with(heroku) {
+    appName = "ced-links"
+}
